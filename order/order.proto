@@ -26,11 +26,11 @@ message GetOrderResponse {
     repeated OrderItem order_items = 2;
 }
 
-message GetTestRequest {}
-message GetTestReponse{}
+message GetMyRequest {}
+message GetMyResponse{}
 
 service Order {
     rpc Create(CreateOrderRequest) returns (CreateOrderResponse){}
     rpc Get(GetOrderRequest) returns (GetOrderResponse){}
-    rpc GetTest(GetTestRequest) returns (GetTestReponse){}
+    rpc GetTest(GetMyRequest) returns (GetMyResponse){}
 }
