@@ -30,7 +30,7 @@ const (
 type OrderClient interface {
 	Create(ctx context.Context, in *CreateOrderRequest, opts ...grpc.CallOption) (*CreateOrderResponse, error)
 	Get(ctx context.Context, in *GetOrderRequest, opts ...grpc.CallOption) (*GetOrderResponse, error)
-	GetTest(ctx context.Context, in *GetTestRequest, opts ...grpc.CallOption) (*GetTestReponse, error)
+	GetTest(ctx context.Context, in *GetMyRequest, opts ...grpc.CallOption) (*GetMyResponse, error)
 }
 
 type orderClient struct {
@@ -61,9 +61,9 @@ func (c *orderClient) Get(ctx context.Context, in *GetOrderRequest, opts ...grpc
 	return out, nil
 }
 
-func (c *orderClient) GetTest(ctx context.Context, in *GetTestRequest, opts ...grpc.CallOption) (*GetTestReponse, error) {
+func (c *orderClient) GetTest(ctx context.Context, in *GetMyRequest, opts ...grpc.CallOption) (*GetMyResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetTestReponse)
+	out := new(GetMyResponse)
 	err := c.cc.Invoke(ctx, Order_GetTest_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -77,7 +77,7 @@ func (c *orderClient) GetTest(ctx context.Context, in *GetTestRequest, opts ...g
 type OrderServer interface {
 	Create(context.Context, *CreateOrderRequest) (*CreateOrderResponse, error)
 	Get(context.Context, *GetOrderRequest) (*GetOrderResponse, error)
-	GetTest(context.Context, *GetTestRequest) (*GetTestReponse, error)
+	GetTest(context.Context, *GetMyRequest) (*GetMyResponse, error)
 	mustEmbedUnimplementedOrderServer()
 }
 
@@ -94,7 +94,7 @@ func (UnimplementedOrderServer) Create(context.Context, *CreateOrderRequest) (*C
 func (UnimplementedOrderServer) Get(context.Context, *GetOrderRequest) (*GetOrderResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
 }
-func (UnimplementedOrderServer) GetTest(context.Context, *GetTestRequest) (*GetTestReponse, error) {
+func (UnimplementedOrderServer) GetTest(context.Context, *GetMyRequest) (*GetMyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetTest not implemented")
 }
 func (UnimplementedOrderServer) mustEmbedUnimplementedOrderServer() {}
@@ -155,7 +155,7 @@ func _Order_Get_Handler(srv interface{}, ctx context.Context, dec func(interface
 }
 
 func _Order_GetTest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetTestRequest)
+	in := new(GetMyRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -167,7 +167,7 @@ func _Order_GetTest_Handler(srv interface{}, ctx context.Context, dec func(inter
 		FullMethod: Order_GetTest_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OrderServer).GetTest(ctx, req.(*GetTestRequest))
+		return srv.(OrderServer).GetTest(ctx, req.(*GetMyRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
